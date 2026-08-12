@@ -1,26 +1,55 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+@theme {
+  --color-ink-950: #0a0a0c;
+  --color-ink-900: #0f0f13;
+  --color-ink-800: #16161c;
+  --color-ink-700: #22222b;
+  --color-gold-300: #e8d3a3;
+  --color-gold-400: #d6b67c;
+  --color-gold-500: #c9a86a;
+  --color-ivory: #efe9dd;
+  --color-faint: #9a9387;
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-playfair), "Times New Roman", serif;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--color-ink-950);
+  color: var(--color-ivory);
+}
+
+::selection {
+  background: var(--color-gold-500);
+  color: #0a0a0c;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-ink-950);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-ink-700);
+  border-radius: 8px;
+}
+
+@utility gold-text {
+  background: linear-gradient(120deg, var(--color-gold-300), var(--color-gold-500));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+@utility chip {
+  @apply cursor-pointer rounded-full border border-ink-700 px-3.5 py-1.5 text-xs tracking-wide transition-colors;
+}
+
+@utility chip-active {
+  @apply border-gold-500 bg-gold-500/10 text-gold-300;
+}
+
+@utility panel {
+  @apply rounded-2xl border border-ink-700/70 bg-ink-900/70;
 }
