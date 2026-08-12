@@ -15,7 +15,7 @@ function adminClient() {
 function validate(body: Record<string, unknown>) {
   const title = typeof body.title === "string" ? body.title.trim() : "";
   const brand = typeof body.brand === "string" ? body.brand.trim() : "";
-  const price = Number(body.price);
+  const price = typeof body.price === "number" ? body.price : NaN;
   if (!title || !brand || !Number.isFinite(price) || price < 0) {
     return { error: "title, brand and a non-negative price are required" };
   }
@@ -105,7 +105,11 @@ export async function PUT(req: Request) {
     .eq("id", id)
     .select()
     .single();
-  if (error) return NextResponse.json({ error: error.message }, { status: 500 });
-  if (!data) return NextResponse.json({ error: "watch not found" }, { status: 404 });
+  if (error) {
+    if (error.code === "PGRST116") {
+      return NextResponse.json({ error: "watch not found" }, { status: 404 });
+    }
+    return NextResponse.json({ error: error.message }, { status: 500 });
+  }
   return NextResponse.json(data);
 }

@@ -20,7 +20,7 @@ export function listingUrl(watch: Listing, siteUrl: string): string {
 }
 
 export function buildPromoText(watch: Listing, siteUrl: string): string {
-  const url = watch.id ? listingUrl(watch, siteUrl) : null;
+  const url = watch.id && siteUrl ? listingUrl(watch, siteUrl) : null;
   const lines: (string | null)[] = [
     `⌚ NEW ARRIVAL — ${watch.title}`,
     watch.reference ? `Ref ${watch.reference}` : null,

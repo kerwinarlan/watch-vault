@@ -75,7 +75,13 @@ export default function Admin() {
 
   async function save() {
     const price = Number(form.price);
-    if (!form.title.trim() || !form.brand.trim() || !Number.isFinite(price) || price < 0) {
+    if (
+      !form.title.trim() ||
+      !form.brand.trim() ||
+      form.price.trim() === "" ||
+      !Number.isFinite(price) ||
+      price < 0
+    ) {
       setNotice({ kind: "err", text: "Title, brand and a valid price are required." });
       return;
     }
@@ -115,9 +121,13 @@ export default function Admin() {
 
   async function copyPromo() {
     if (!target) return;
-    await navigator.clipboard.writeText(buildPromoText(target, SITE_URL));
-    setCopied(true);
-    setTimeout(() => setCopied(false), 1500);
+    try {
+      await navigator.clipboard.writeText(buildPromoText(target, SITE_URL));
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1500);
+    } catch {
+      setNotice({ kind: "err", text: "Copy failed - clipboard is unavailable on this connection." });
+    }
   }
 
   const promo = target ? buildPromoText(target, SITE_URL) : null;
