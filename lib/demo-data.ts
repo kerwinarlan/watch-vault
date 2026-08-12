@@ -1,0 +1,75 @@
+// Demo dataset: mirrors supabase/seed.sql so the site renders without a
+// Supabase project. Read-only; admin writes still require real env vars.
+import type { Watch } from "./types.ts";
+
+export const DEMO_WATCHES: Watch[] = [
+  {
+    id: 1,
+    title: "Submariner Date 126610LN",
+    brand: "Rolex",
+    reference: "126610LN",
+    price: 12500,
+    currency: "USD",
+    condition: "New",
+    status: "Available",
+    images: [
+      "https://picsum.photos/seed/rolex1/900/700",
+      "https://picsum.photos/seed/rolex2/900/700",
+    ],
+    created_at: "2026-08-01T00:00:00Z",
+  },
+  {
+    id: 2,
+    title: "Speedmaster Professional Moonwatch",
+    brand: "Omega",
+    reference: "310.30.42.50.01.001",
+    price: 6800,
+    currency: "USD",
+    condition: "Pre-owned",
+    status: "Available",
+    images: ["https://picsum.photos/seed/omega1/900/700"],
+    created_at: "2026-08-02T00:00:00Z",
+  },
+  {
+    id: 3,
+    title: "Nautilus 5711/1A",
+    brand: "Patek Philippe",
+    reference: "5711/1A-010",
+    price: 85000,
+    currency: "USD",
+    condition: "Mint",
+    status: "Reserved",
+    images: [
+      "https://picsum.photos/seed/patek1/900/700",
+      "https://picsum.photos/seed/patek2/900/700",
+    ],
+    created_at: "2026-08-03T00:00:00Z",
+  },
+  {
+    id: 4,
+    title: "Royal Oak 15500ST",
+    brand: "Audemars Piguet",
+    reference: "15500ST.OO.1220ST.01",
+    price: 45000,
+    currency: "USD",
+    condition: "Pre-owned",
+    status: "Available",
+    images: ["https://picsum.photos/seed/ap1/900/700"],
+    created_at: "2026-08-04T00:00:00Z",
+  },
+  {
+    id: 5,
+    title: "Black Bay 58",
+    brand: "Tudor",
+    reference: "M79030B-0001",
+    price: 390000,
+    currency: "PHP",
+    condition: "New",
+    status: "Sold",
+    images: [
+      "https://picsum.photos/seed/tudor1/900/700",
+      "https://picsum.photos/seed/tudor2/900/700",
+    ],
+    created_at: "2026-08-05T00:00:00Z",
+  },
+];
