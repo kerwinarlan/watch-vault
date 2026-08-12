@@ -1,0 +1,4 @@
+# Trusted no-mistakes config, read from the default branch (main).
+# This repository has no CI workflows, so declare no_ci: the gate treats
+# zero checks as green instead of waiting forever on an empty check list.
+no_ci: true
