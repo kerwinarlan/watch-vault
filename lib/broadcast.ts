@@ -28,14 +28,14 @@ export function buildPromoText(watch: Listing, siteUrl: string): string {
     `Condition: ${watch.condition} | Price: ${formatPrice(watch)}`,
     `Status: ${watch.status}`,
     "",
-    "A grail piece, freshly listed in the vault. Serious inquiries only.",
+    "A grail piece, freshly listed. Serious inquiries only.",
     url ? `View listing: ${url}` : null,
   ];
   return lines.filter((line) => line !== null).join("\n");
 }
 
 export function inquireOnViberText(watch: Listing): string {
-  return `Hi ChronoVault! I'm interested in the ${watch.title} (${formatPrice(watch)}). Is it still available?`;
+  return `Hi The Watch Alley! I'm interested in the ${watch.title} (${formatPrice(watch)}). Is it still available?`;
 }
 
 export function viberForwardLink(text: string): string {

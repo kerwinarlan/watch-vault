@@ -4,7 +4,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { supabase } from "@/lib/supabase";
-import { CONDITIONS, STATUSES, formatPrice, priceInUsd, type Watch } from "@/lib/types";
+import { CONDITIONS, STATUSES, formatPrice, priceInUsd, type Status, type Watch } from "@/lib/types";
 import { inquireOnViberText, viberForwardLink } from "@/lib/broadcast";
 
 type PriceFilter = "all" | "lt10" | "10to25" | "gt25";
@@ -29,9 +29,9 @@ const PRICE_CHIPS: ChipOption[] = [
 ];
 
 const STATUS_STYLE: Record<Watch["status"], string> = {
-  Available: "border-emerald-400/40 text-emerald-300",
-  Reserved: "border-amber-400/40 text-amber-300",
-  Sold: "border-zinc-500/50 text-zinc-400",
+  Available: "border-amber-300/60 text-amber-200",
+  Reserved: "border-amber-200/40 text-amber-200/80",
+  Sold: "border-cream-60/40 text-cream-60",
 };
 
 const CONFIG_ERROR = supabase
@@ -109,7 +109,7 @@ function GalleryModal({
       aria-label={watch.title}
     >
       <div className="panel w-full max-w-3xl overflow-hidden" onClick={(e) => e.stopPropagation()}>
-        <div className="relative aspect-[16/10] bg-ink-800">
+        <div className="relative aspect-[16/10] bg-walnut">
           {image ? (
             <img
               src={image}
@@ -118,7 +118,7 @@ function GalleryModal({
               onError={(e) => (e.currentTarget.style.display = "none")}
             />
           ) : (
-            <div className="flex h-full items-center justify-center font-display text-6xl text-gold-500">
+            <div className="flex h-full items-center justify-center font-display text-6xl text-amber-300">
               ⌚
             </div>
           )}
@@ -126,19 +126,19 @@ function GalleryModal({
             <>
               <button
                 onClick={() => setIndex((index - 1 + count) % count)}
-                className="absolute left-3 top-1/2 -translate-y-1/2 rounded-full border border-ink-700 bg-ink-950/70 px-3 py-1.5 text-gold-300 hover:border-gold-500"
+                className="absolute left-3 top-1/2 -translate-y-1/2 rounded-full border border-walnut-light bg-walnut-deep/70 px-3 py-1.5 text-amber-200 hover:border-amber-300"
                 aria-label="Previous image"
               >
                 ←
               </button>
               <button
                 onClick={() => setIndex((index + 1) % count)}
-                className="absolute right-3 top-1/2 -translate-y-1/2 rounded-full border border-ink-700 bg-ink-950/70 px-3 py-1.5 text-gold-300 hover:border-gold-500"
+                className="absolute right-3 top-1/2 -translate-y-1/2 rounded-full border border-walnut-light bg-walnut-deep/70 px-3 py-1.5 text-amber-200 hover:border-amber-300"
                 aria-label="Next image"
               >
                 →
               </button>
-              <span className="absolute bottom-3 right-3 rounded-full bg-ink-950/70 px-2 py-0.5 text-xs text-faint">
+              <span className="absolute bottom-3 right-3 rounded-full bg-walnut-deep/70 px-2 py-0.5 text-xs text-cream-60">
                 {index + 1} / {count}
               </span>
             </>
@@ -146,9 +146,9 @@ function GalleryModal({
         </div>
         <div className="flex flex-wrap items-center justify-between gap-4 p-6">
           <div>
-            <div className="text-xs uppercase tracking-widest text-gold-500">{watch.brand}</div>
+            <div className="text-xs uppercase tracking-widest text-amber-200/80">{watch.brand}</div>
             <h3 className="mt-1 font-display text-2xl">{watch.title}</h3>
-            <div className="mt-1 text-sm text-faint">
+            <div className="mt-1 text-sm text-cream-60">
               {watch.reference ? `Ref ${watch.reference} · ` : ""}Condition: {watch.condition}
             </div>
             <div className="mt-2 font-display text-xl gold-text">{formatPrice(watch)}</div>
@@ -157,7 +157,7 @@ function GalleryModal({
             href={viberForwardLink(inquireOnViberText(watch))}
             target="_blank"
             rel="noopener"
-            className="rounded-full border border-gold-500 px-5 py-2.5 text-sm text-gold-300 transition-colors hover:bg-gold-500/10"
+            className="rounded-full border border-amber-300/30 px-5 py-2.5 text-xs uppercase tracking-[0.2em] text-amber-200 transition-colors hover:border-amber-300/60 hover:bg-amber-300/10"
           >
             Inquire on Viber
           </a>
@@ -169,7 +169,7 @@ function GalleryModal({
                 key={img}
                 onClick={() => setIndex(i)}
                 className={`h-16 w-20 overflow-hidden rounded-lg border ${
-                  i === index ? "border-gold-500" : "border-ink-700 opacity-60"
+                  i === index ? "border-amber-300" : "border-walnut-light opacity-60"
                 }`}
                 aria-label={`Image ${i + 1}`}
               >
@@ -188,14 +188,20 @@ function GalleryModal({
   );
 }
 
-export default function Catalog({ initialWatchId }: { initialWatchId: number | null }) {
+export default function Catalog({
+  initialWatchId,
+  initialStatus,
+}: {
+  initialWatchId: number | null;
+  initialStatus: Status | null;
+}) {
   const [watches, setWatches] = useState<Watch[] | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [filters, setFilters] = useState<Filters>({
     brand: null,
     price: "all",
     condition: null,
-    status: null,
+    status: initialStatus,
   });
   const [modalId, setModalId] = useState<number | null>(initialWatchId);
   const [imageIndex, setImageIndex] = useState(0);
@@ -232,16 +238,24 @@ export default function Catalog({ initialWatchId }: { initialWatchId: number | n
 
   return (
     <div className="mx-auto max-w-6xl px-6 py-14">
-      <section className="mb-12 max-w-2xl">
-        <p className="text-xs uppercase tracking-[0.3em] text-gold-500">The Vault</p>
-        <h1 className="mt-3 font-display text-4xl sm:text-5xl">
-          Timepieces with <span className="gold-text">provenance</span>.
+      <section className="mb-12 max-w-3xl">
+        <p className="micro-label text-amber-300/80">The Watch Alley — Manila</p>
+        <h1 className="mt-4 font-display text-[clamp(40px,7vw,86px)] font-light leading-[0.96] tracking-tight">
+          First access, chosen with a{" "}
+          <span className="gold-text">collector's eye</span>.
         </h1>
-        <p className="mt-4 text-faint">
-          Curated luxury watches, authenticated and ready. Inquire directly on Viber - no bots, no
-          monthly fees.
+        <p className="mt-5 text-sm text-cream-60">
+          Curated pre-owned and brand-new watches in Manila — daylight photos, written condition
+          notes, and direct concierge on Viber. No bots, no monthly fees.
         </p>
       </section>
+
+      <div className="mb-8 flex items-center gap-3">
+        <span className="h-px w-8 bg-amber-500/60" aria-hidden="true" />
+        <h2 className="font-display text-3xl uppercase tracking-tight text-cream">
+          Available Pieces
+        </h2>
+      </div>
 
       <div className="mb-10 space-y-5">
         <FilterRow
@@ -271,7 +285,7 @@ export default function Catalog({ initialWatchId }: { initialWatchId: number | n
         {anyFilter && (
           <button
             onClick={clearFilters}
-            className="text-xs text-gold-400 underline-offset-4 hover:underline"
+            className="text-xs text-amber-300 underline-offset-4 hover:underline"
           >
             Reset filters
           </button>
@@ -283,9 +297,9 @@ export default function Catalog({ initialWatchId }: { initialWatchId: number | n
       ) : error ? (
         <p className="panel mb-8 p-4 text-sm text-amber-300">{error}</p>
       ) : watches === null ? (
-        <p className="py-16 text-center text-faint">Loading the vault…</p>
+        <p className="py-16 text-center text-cream-60">Opening the display case…</p>
       ) : filtered.length === 0 ? (
-        <p className="py-16 text-center text-faint">No timepieces match these filters.</p>
+        <p className="py-16 text-center text-cream-60">No timepieces match these filters.</p>
       ) : (
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {filtered.map((w) => (
@@ -301,7 +315,7 @@ export default function Catalog({ initialWatchId }: { initialWatchId: number | n
                 className="block w-full"
                 aria-label={`View ${w.title}`}
               >
-                <div className="relative aspect-[4/3] overflow-hidden bg-ink-800">
+                <div className="relative aspect-[4/3] overflow-hidden bg-walnut">
                   {w.images[0] ? (
                     <img
                       src={w.images[0]}
@@ -310,32 +324,32 @@ export default function Catalog({ initialWatchId }: { initialWatchId: number | n
                       onError={(e) => (e.currentTarget.style.display = "none")}
                     />
                   ) : (
-                    <div className="flex h-full items-center justify-center font-display text-5xl text-gold-500">
+                    <div className="flex h-full items-center justify-center font-display text-5xl text-amber-300">
                       ⌚
                     </div>
                   )}
                   <span
-                    className={`absolute left-3 top-3 rounded-full border bg-ink-950/70 px-2.5 py-1 text-xs ${STATUS_STYLE[w.status]}`}
+                    className={`absolute left-3 top-3 rounded-full border bg-walnut-deep/70 px-2.5 py-1 text-xs ${STATUS_STYLE[w.status]}`}
                   >
                     {w.status}
                   </span>
                 </div>
               </button>
               <div className="p-5">
-                <div className="text-xs uppercase tracking-widest text-gold-500">{w.brand}</div>
+                <div className="micro-label text-amber-200/80">{w.brand}</div>
                 <h3 className="mt-1 font-display text-lg leading-snug">{w.title}</h3>
-                <div className="mt-1 text-xs text-faint">
+                <div className="mt-1 font-mono text-[10px] uppercase tracking-[0.2em] text-cream-60">
                   {w.reference ? `Ref ${w.reference}` : "No reference"}
                 </div>
                 <div className="mt-3 flex items-center justify-between">
                   <span className="font-display text-xl gold-text">{formatPrice(w)}</span>
-                  <span className="text-xs text-faint">{w.condition}</span>
+                  <span className="text-xs text-cream-60">{w.condition}</span>
                 </div>
                 <a
                   href={viberForwardLink(inquireOnViberText(w))}
                   target="_blank"
                   rel="noopener"
-                  className="mt-4 block rounded-full border border-gold-500 py-2 text-center text-sm text-gold-300 transition-colors hover:bg-gold-500/10"
+                  className="mt-4 block rounded-full border border-amber-300/30 py-2 text-center text-xs uppercase tracking-[0.2em] text-amber-200 transition-colors hover:border-amber-300/60 hover:bg-amber-300/10"
                 >
                   Inquire on Viber
                 </a>

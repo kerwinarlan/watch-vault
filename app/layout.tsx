@@ -7,33 +7,45 @@ const inter = Inter({ variable: "--font-inter", subsets: ["latin"] });
 const playfair = Playfair_Display({ variable: "--font-playfair", subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "ChronoVault — Luxury Watch Resale",
+  title: "The Watch Alley PH — Curated Watches in Manila",
   description:
-    "A high-end luxury watch reseller inventory platform with an admin broadcast suite for Viber and socials.",
+    "Curated pre-owned and brand-new watches in Manila with daylight photos, written condition notes, and direct collector concierge on Viber.",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={`${inter.variable} ${playfair.variable}`}>
-      <body className="flex min-h-screen flex-col bg-ink-950 font-sans text-ivory">
-        <header className="sticky top-0 z-40 border-b border-ink-700/60 bg-ink-950/80 backdrop-blur">
+      <body className="flex min-h-screen flex-col bg-walnut-deep font-sans text-cream">
+        <header className="sticky top-0 z-40 border-b border-walnut-light/70 bg-walnut-deep/85 backdrop-blur">
           <nav className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
-            <Link href="/" className="font-display text-xl tracking-wide text-gold-400">
-              ChronoVault
+            <Link href="/" className="font-display text-xl tracking-wide text-cream">
+              The Watch <span className="text-amber-300">Alley</span>
             </Link>
-            <div className="flex items-center gap-6 text-sm text-faint">
-              <Link href="/" className="transition-colors hover:text-ivory">
-                Catalog
+            <div className="flex items-center gap-6">
+              <Link
+                href="/?status=Available"
+                className="micro-label text-cream-60 transition-colors hover:text-amber-200"
+              >
+                Available
               </Link>
-              <Link href="/admin" className="transition-colors hover:text-ivory">
+              <Link
+                href="/?status=Sold"
+                className="micro-label text-cream-60 transition-colors hover:text-amber-200"
+              >
+                Sold
+              </Link>
+              <Link
+                href="/admin"
+                className="micro-label text-cream-60 transition-colors hover:text-amber-200"
+              >
                 Admin
               </Link>
             </div>
           </nav>
         </header>
         <main className="flex-1">{children}</main>
-        <footer className="border-t border-ink-700/60 py-8 text-center text-xs text-faint">
-          ChronoVault — luxury watch resale &amp; broadcast suite. Demo project.
+        <footer className="border-t border-walnut-light/70 py-8 text-center text-xs text-cream-60">
+          The Watch Alley PH — curated watches in Manila. Demo build of ChronoVault.
         </footer>
       </body>
     </html>

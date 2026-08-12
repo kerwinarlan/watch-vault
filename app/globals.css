@@ -1,55 +1,56 @@
 @import "tailwindcss";
 
 @theme {
-  --color-ink-950: #0a0a0c;
-  --color-ink-900: #0f0f13;
-  --color-ink-800: #16161c;
-  --color-ink-700: #22222b;
-  --color-gold-300: #e8d3a3;
-  --color-gold-400: #d6b67c;
-  --color-gold-500: #c9a86a;
-  --color-ivory: #efe9dd;
-  --color-faint: #9a9387;
+  --color-walnut-deep: #16110b;
+  --color-walnut: #1e1710;
+  --color-walnut-light: #2e2518;
+  --color-cream: #f2ead8;
+  --color-cream-60: #b3a68e;
+  --color-faint: #b3a68e;
   --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
   --font-display: var(--font-playfair), "Times New Roman", serif;
 }
 
 body {
-  background: var(--color-ink-950);
-  color: var(--color-ivory);
+  background: var(--color-walnut-deep);
+  color: var(--color-cream);
 }
 
 ::selection {
-  background: var(--color-gold-500);
-  color: #0a0a0c;
+  background: var(--color-amber-300);
+  color: #16110b;
 }
 
 ::-webkit-scrollbar {
   width: 10px;
 }
 ::-webkit-scrollbar-track {
-  background: var(--color-ink-950);
+  background: var(--color-walnut-deep);
 }
 ::-webkit-scrollbar-thumb {
-  background: var(--color-ink-700);
+  background: var(--color-walnut-light);
   border-radius: 8px;
 }
 
 @utility gold-text {
-  background: linear-gradient(120deg, var(--color-gold-300), var(--color-gold-500));
+  background: linear-gradient(120deg, #fde68a, #fbbf24);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
 }
 
 @utility chip {
-  @apply cursor-pointer rounded-full border border-ink-700 px-3.5 py-1.5 text-xs tracking-wide transition-colors;
+  @apply cursor-pointer rounded-full border border-walnut-light px-3.5 py-1.5 text-xs tracking-wide text-cream-60 transition-colors hover:border-amber-300/40 hover:text-cream;
 }
 
 @utility chip-active {
-  @apply border-gold-500 bg-gold-500/10 text-gold-300;
+  @apply border-amber-300/70 bg-amber-300/10 text-amber-200;
 }
 
 @utility panel {
-  @apply rounded-2xl border border-ink-700/70 bg-ink-900/70;
+  @apply rounded-xl border border-walnut-light bg-walnut/70;
+}
+
+@utility micro-label {
+  @apply font-mono text-[10px] uppercase tracking-[0.25em];
 }

@@ -14,7 +14,7 @@ import {
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "";
 const inputCls =
-  "w-full rounded-xl border border-ink-700 bg-ink-950/60 px-3.5 py-2.5 text-sm text-ivory outline-none transition-colors placeholder:text-faint/60 focus:border-gold-500";
+  "w-full rounded-xl border border-walnut-light bg-walnut-deep/60 px-3.5 py-2.5 text-sm text-cream outline-none transition-colors placeholder:text-cream-60/60 focus:border-amber-300";
 
 interface FormState {
   id: number | null;
@@ -107,7 +107,7 @@ export default function Admin() {
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error ?? `HTTP ${res.status}`);
-      setNotice({ kind: "ok", text: form.id ? "Watch updated." : "Watch added to the vault." });
+      setNotice({ kind: "ok", text: form.id ? "Watch updated." : "Watch added to the collection." });
       setTarget(data as Watch);
       setForm({ ...EMPTY_FORM });
       load();
@@ -137,7 +137,7 @@ export default function Admin() {
 
   return (
     <div className="mx-auto max-w-6xl px-6 py-14">
-      <p className="text-xs uppercase tracking-[0.3em] text-gold-500">Command Deck</p>
+      <p className="text-xs uppercase tracking-[0.3em] text-amber-300">Command Deck</p>
       <h1 className="mt-3 font-display text-4xl">Admin &amp; Broadcast Suite</h1>
 
       {notice && (
@@ -248,14 +248,14 @@ export default function Admin() {
             <div className="flex gap-3">
               <button
                 onClick={save}
-                className="rounded-full bg-gold-500 px-6 py-2.5 text-sm font-medium text-ink-950 transition-colors hover:bg-gold-400"
+                className="rounded-full bg-amber-300 px-6 py-2.5 text-sm font-medium text-walnut-deep transition-colors hover:bg-amber-200"
               >
                 Save Watch
               </button>
               {form.id && (
                 <button
                   onClick={() => setForm(EMPTY_FORM)}
-                  className="rounded-full border border-ink-700 px-4 py-2.5 text-sm text-faint hover:border-gold-500"
+                  className="rounded-full border border-walnut-light px-4 py-2.5 text-sm text-cream-60 hover:border-amber-300"
                 >
                   Cancel
                 </button>
@@ -278,13 +278,13 @@ export default function Admin() {
               <div className="mb-4 text-sm text-faint">
                 {target.title} · {formatPrice(target)}
               </div>
-              <pre className="mb-4 whitespace-pre-wrap rounded-xl border border-ink-700 bg-ink-950/60 p-4 font-sans text-sm leading-relaxed text-ivory">
+              <pre className="mb-4 whitespace-pre-wrap rounded-xl border border-walnut-light bg-walnut-deep/60 p-4 font-sans text-sm leading-relaxed text-cream">
                 {promo}
               </pre>
               <div className="flex flex-wrap gap-3">
                 <button
                   onClick={copyPromo}
-                  className="rounded-full border border-gold-500 px-4 py-2 text-sm text-gold-300 transition-colors hover:bg-gold-500/10"
+                  className="rounded-full border border-amber-300/40 px-4 py-2 text-sm text-amber-200 transition-colors hover:bg-amber-300/10"
                 >
                   {copied ? "Copied ✓" : "Copy Text"}
                 </button>
@@ -292,7 +292,7 @@ export default function Admin() {
                   href={viberForwardLink(promo ?? "")}
                   target="_blank"
                   rel="noopener"
-                  className="rounded-full border border-ink-700 px-4 py-2 text-sm text-ivory transition-colors hover:border-gold-500"
+                  className="rounded-full border border-walnut-light px-4 py-2 text-sm text-cream transition-colors hover:border-amber-300"
                 >
                   Open Viber (pre-filled)
                 </a>
@@ -300,7 +300,7 @@ export default function Admin() {
                   href={links?.facebook}
                   target="_blank"
                   rel="noopener"
-                  className="rounded-full border border-ink-700 px-4 py-2 text-sm text-ivory transition-colors hover:border-gold-500"
+                  className="rounded-full border border-walnut-light px-4 py-2 text-sm text-cream transition-colors hover:border-amber-300"
                 >
                   Share Facebook
                 </a>
@@ -308,7 +308,7 @@ export default function Admin() {
                   href={links?.x}
                   target="_blank"
                   rel="noopener"
-                  className="rounded-full border border-ink-700 px-4 py-2 text-sm text-ivory transition-colors hover:border-gold-500"
+                  className="rounded-full border border-walnut-light px-4 py-2 text-sm text-cream transition-colors hover:border-amber-300"
                 >
                   Share X
                 </a>
@@ -316,7 +316,7 @@ export default function Admin() {
                   href={links?.whatsapp}
                   target="_blank"
                   rel="noopener"
-                  className="rounded-full border border-ink-700 px-4 py-2 text-sm text-ivory transition-colors hover:border-gold-500"
+                  className="rounded-full border border-walnut-light px-4 py-2 text-sm text-cream transition-colors hover:border-amber-300"
                 >
                   Share WhatsApp
                 </a>
@@ -336,7 +336,7 @@ export default function Admin() {
         {watches === null ? (
           <p className="text-sm text-faint">Loading…</p>
         ) : watches.length === 0 ? (
-          <p className="text-sm text-faint">The vault is empty. Add your first watch.</p>
+          <p className="text-sm text-cream-60">The collection is empty. Add your first watch.</p>
         ) : (
           <ul className="divide-y divide-ink-700">
             {watches.map((w) => (
