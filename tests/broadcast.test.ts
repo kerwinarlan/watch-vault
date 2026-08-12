@@ -64,3 +64,20 @@ test("shareLinks build facebook, x and whatsapp targets", () => {
   assert.match(links.x, /twitter\.com\/intent\/tweet/);
   assert.match(links.whatsapp, /wa\.me\/\?text=/);
 });
+
+import { DEMO_WATCHES } from "../lib/demo-data.ts";
+
+test("demo dataset resolves through the mock client chain", async () => {
+  const data = await import("../lib/supabase.ts").then((m) =>
+    m.supabase.from("watches").select("*").order("created_at", { ascending: false })
+  );
+  expectDemo(data);
+});
+
+function expectDemo(result: { data: unknown; error: unknown }) {
+  const { data, error } = result as { data: unknown[]; error: null };
+  if (error) throw new Error("demo client must not error");
+  if (!Array.isArray(data) || data.length !== DEMO_WATCHES.length) {
+    throw new Error("demo client must resolve the seed watches");
+  }
+}
