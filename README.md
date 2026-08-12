@@ -1,6 +1,6 @@
 <div align="center">
 
-# ⌚ ChronoVault
+# ⌚ The Watch Alley PH
 
 **Luxury watch reseller inventory platform + admin broadcast suite**
 
@@ -40,7 +40,7 @@ required.
 
 Official Viber bots now carry a mandatory **EUR 100/month fee**, and the
 classic integration (`POST chatapi.viber.com/pa/post` with a bot token) also
-requires certified-webhook infrastructure. ChronoVault bypasses the bot API
+requires certified-webhook infrastructure. The Watch Alley PH bypasses the bot API
 entirely:
 
 | Capability | Mechanism | Cost |
@@ -171,7 +171,7 @@ npm run dev        # http://localhost:3000
 
 ## Deployment
 
-ChronoVault is a standard Next.js 16 app and deploys to any platform that
+The Watch Alley PH is a standard Next.js 16 app and deploys to any platform that
 supports it (Vercel, Netlify, Cloudflare Workers):
 
 1. Push the repo and import it in your platform's dashboard.

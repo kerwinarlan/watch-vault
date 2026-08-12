@@ -1,4 +1,4 @@
--- ChronoVault (watch-vault) — Supabase schema
+-- The Watch Alley PH (watch-vault) — Supabase schema
 -- Run in the Supabase SQL editor, then run seed.sql for sample data.
 
 create table if not exists public.watches (

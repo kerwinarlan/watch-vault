@@ -45,7 +45,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         </header>
         <main className="flex-1">{children}</main>
         <footer className="border-t border-walnut-light/70 py-8 text-center text-xs text-cream-60">
-          The Watch Alley PH — curated watches in Manila. Demo build of ChronoVault.
+          The Watch Alley PH — curated watches in Manila. Demo project.
         </footer>
       </body>
     </html>
