@@ -1,6 +1,8 @@
 import { createClient } from "@supabase/supabase-js";
 import { NextResponse } from "next/server";
 import { CURRENCIES, CONDITIONS, STATUSES } from "@/lib/types";
+import { buildPromoText } from "@/lib/broadcast";
+import { postToViber } from "@/lib/viber";
 
 const url = process.env.NEXT_PUBLIC_SUPABASE_URL ?? "";
 const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY ?? "";
@@ -76,7 +78,11 @@ export async function POST(req: Request) {
   if ("error" in watch) return NextResponse.json(watch, { status: 400 });
   const { data, error } = await admin.from("watches").insert(watch).select().single();
   if (error) return NextResponse.json({ error: error.message }, { status: 500 });
-  return NextResponse.json(data, { status: 201 });
+  // Owner broadcast: auto-post the new listing to Viber. Never fails the save.
+  const viber = await postToViber(
+    buildPromoText(data, process.env.NEXT_PUBLIC_SITE_URL ?? "")
+  );
+  return NextResponse.json({ ...data, viber }, { status: 201 });
 }
 
 export async function PUT(req: Request) {

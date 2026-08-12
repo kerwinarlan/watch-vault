@@ -45,6 +45,23 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         </header>
         <main className="flex-1">{children}</main>
         <footer className="border-t border-walnut-light/70 py-8 text-center text-xs text-cream-60">
+          <div className="mb-3 flex items-center justify-center gap-6">
+            <a className="micro-label text-cream-60 transition-colors hover:text-amber-200" href="https://www.facebook.com/TheWatchAlley" target="_blank" rel="noopener">
+              Facebook
+            </a>
+            <a className="micro-label text-cream-60 transition-colors hover:text-amber-200" href="https://www.instagram.com/the.watch.alley/" target="_blank" rel="noopener">
+              Instagram
+            </a>
+            <a className="micro-label text-cream-60 transition-colors hover:text-amber-200" href="https://www.tiktok.com/@the.watch.alley.ph" target="_blank" rel="noopener">
+              TikTok
+            </a>
+            <a className="micro-label text-cream-60 transition-colors hover:text-amber-200" href="https://api.whatsapp.com/send?phone=639206332503" target="_blank" rel="noopener">
+              WhatsApp
+            </a>
+            <a className="micro-label text-cream-60 transition-colors hover:text-amber-200" href="https://m.me/thewatchalley" target="_blank" rel="noopener">
+              Messenger
+            </a>
+          </div>
           The Watch Alley PH — curated watches in Manila. Demo project.
         </footer>
       </body>

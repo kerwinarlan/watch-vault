@@ -107,7 +107,15 @@ export default function Admin() {
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error ?? `HTTP ${res.status}`);
-      setNotice({ kind: "ok", text: form.id ? "Watch updated." : "Watch added to the collection." });
+      const viberNote = !form.id && data.viber
+        ? data.viber.sent
+          ? " Posted to Viber ✓"
+          : ` Viber skipped (${data.viber.error ?? "not configured"})`
+        : "";
+      setNotice({
+        kind: "ok",
+        text: (form.id ? "Watch updated." : "Watch added to the collection.") + viberNote,
+      });
       setTarget(data as Watch);
       setForm({ ...EMPTY_FORM });
       load();

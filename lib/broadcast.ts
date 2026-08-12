@@ -38,6 +38,18 @@ export function inquireOnViberText(watch: Listing): string {
   return `Hi The Watch Alley! I'm interested in the ${watch.title} (${formatPrice(watch)}). Is it still available?`;
 }
 
+export function inquireWhatsAppLink(watch: Listing, phone: string): string {
+  return `https://api.whatsapp.com/send?phone=${phone.replace(/[^0-9]/g, "")}&text=${encodeURIComponent(
+    inquireOnViberText(watch)
+  )}`;
+}
+
+export function inquireMessengerLink(watch: Listing, handle: string): string {
+  return `https://m.me/${handle.replace(/^@/, "")}?text=${encodeURIComponent(
+    inquireOnViberText(watch)
+  )}`;
+}
+
 export function viberForwardLink(text: string): string {
   return `viber://forward?text=${encodeURIComponent(text)}`;
 }

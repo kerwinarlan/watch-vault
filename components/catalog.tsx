@@ -5,7 +5,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { supabase } from "@/lib/supabase";
 import { CONDITIONS, STATUSES, formatPrice, priceInUsd, type Status, type Watch } from "@/lib/types";
-import { inquireOnViberText, viberForwardLink } from "@/lib/broadcast";
+import { inquireMessengerLink, inquireOnViberText, inquireWhatsAppLink, viberForwardLink } from "@/lib/broadcast";
 
 type PriceFilter = "all" | "lt10" | "10to25" | "gt25";
 
@@ -37,6 +37,36 @@ const STATUS_STYLE: Record<Watch["status"], string> = {
 const CONFIG_ERROR = supabase
   ? null
   : "Supabase is not configured. Add NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY, then run supabase/schema.sql.";
+
+const WHATSAPP = process.env.NEXT_PUBLIC_WHATSAPP ?? "";
+const MESSENGER = process.env.NEXT_PUBLIC_MESSENGER ?? "";
+
+function InquiryRow({ watch }: { watch: Watch }) {
+  const channels = [
+    { href: viberForwardLink(inquireOnViberText(watch)), label: "Viber" },
+    ...(WHATSAPP
+      ? [{ href: inquireWhatsAppLink(watch, WHATSAPP), label: "WhatsApp" }]
+      : []),
+    ...(MESSENGER
+      ? [{ href: inquireMessengerLink(watch, MESSENGER), label: "Messenger" }]
+      : []),
+  ];
+  return (
+    <div className="mt-4 grid grid-cols-3 gap-2">
+      {channels.map((c) => (
+        <a
+          key={c.label}
+          href={c.href}
+          target="_blank"
+          rel="noopener"
+          className="rounded-full border border-amber-300/30 py-2 text-center text-[10px] uppercase tracking-[0.2em] text-amber-200 transition-colors hover:border-amber-300/60 hover:bg-amber-300/10"
+        >
+          {c.label}
+        </a>
+      ))}
+    </div>
+  );
+}
 
 function matches(filters: Filters, watch: Watch): boolean {
   if (filters.brand && watch.brand !== filters.brand) return false;
@@ -345,14 +375,7 @@ export default function Catalog({
                   <span className="font-display text-xl gold-text">{formatPrice(w)}</span>
                   <span className="text-xs text-cream-60">{w.condition}</span>
                 </div>
-                <a
-                  href={viberForwardLink(inquireOnViberText(w))}
-                  target="_blank"
-                  rel="noopener"
-                  className="mt-4 block rounded-full border border-amber-300/30 py-2 text-center text-xs uppercase tracking-[0.2em] text-amber-200 transition-colors hover:border-amber-300/60 hover:bg-amber-300/10"
-                >
-                  Inquire on Viber
-                </a>
+                <InquiryRow watch={w} />
               </div>
             </article>
           ))}

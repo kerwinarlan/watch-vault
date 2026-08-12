@@ -14,9 +14,9 @@
 </div>
 
 A high-end luxury watch reseller storefront with a private inventory manager
-and a one-click **broadcast suite** that pushes promotional posts to Viber,
-Facebook, X and WhatsApp through **web-native deep links** - no paid bot API
-required.
+and a **broadcast suite** for the owner: saving a watch automatically posts
+it to his Viber channel / group chat, and every watch carries one-click
+inquiry buttons for Viber, WhatsApp and Messenger.
 
 ---
 
@@ -45,10 +45,9 @@ entirely:
 
 | Capability | Mechanism | Cost |
 |---|---|---|
-| Broadcast to Viber | `viber://forward?text=<encoded>` opens Viber with the post pre-filled in the forward composer | EUR 0 |
-| Desktop fallback | Copy Text button | EUR 0 |
+| Owner auto-post to Viber GC | Admin save calls `chatapi.viber.com/pa/post` - new listings appear in the owner's Viber channel / group chat automatically | EUR 0 with a Channel token |
+| Catalog inquiries | Per-watch Viber / WhatsApp / Messenger buttons with pre-filled inquiry messages | EUR 0 |
 | Share to socials | Facebook / X / WhatsApp share intent URLs | EUR 0 |
-| Catalog inquiries | `viber://forward` with a per-watch inquiry message | EUR 0 |
 
 Result: full broadcast capability with zero API fees and zero webhook
 infrastructure. `viber://forward` works on iOS and Android Viber; Copy Text
@@ -63,7 +62,9 @@ covers desktop.
 - Filter chips: Brand, Price range (USD-equivalent; PHP pegged at 56/USD),
   Condition, Availability - single-select with toggle and Reset
 - Photo gallery modal: thumbnails, prev/next, arrow-key and Escape support
-- "Inquire on Viber" CTA on every watch (pre-filled inquiry via deep link)
+- "Inquire" buttons on every watch: **Viber**, **WhatsApp** and
+  **Messenger** with pre-filled inquiry messages (env-configured)
+- Social links in the footer: Facebook, Instagram, TikTok, WhatsApp, Messenger
 - `/?watch=<id>` opens a specific listing's modal - this is what broadcast
   links point back to
 
@@ -73,6 +74,9 @@ covers desktop.
   Condition (New / Pre-owned / Mint), Status (Available / Reserved / Sold),
   image URLs
 - Inventory list with per-watch Edit and Broadcast actions
+- **Auto-broadcast**: saving a new watch posts it to the owner's Viber
+  channel / group chat via `chatapi.viber.com/pa/post` (result reported in
+  the save response)
 - Broadcast Hub: formats a high-converting promo post, then one-click:
   **Copy Text** · **Open Viber (pre-filled)** · **Share Facebook** ·
   **Share X** · **Share WhatsApp**
@@ -91,7 +95,7 @@ covers desktop.
 - **Supabase (Postgres)** - RLS: public read for the catalog; admin writes go
   through a server-side service-role route handler that never reaches the
   browser
-- **Node's built-in test runner** (`node:test`) - 6 behavior tests with zero
+- **Node's built-in test runner** (`node:test`) - 9 tests with zero
   test framework; TypeScript types stripped at runtime via
   `--experimental-strip-types`
 
@@ -100,9 +104,9 @@ covers desktop.
 ```
 app/                pages (/, /admin) + POST/PUT /api/admin/watches
 components/         catalog.tsx, admin.tsx (client components)
-lib/                types.ts, supabase.ts, broadcast.ts (deep-link engine)
-supabase/           schema.sql, seed.sql (5 sample watches)
-tests/              broadcast.test.ts (node:test)
+lib/                types.ts, supabase.ts, broadcast.ts, viber.ts (owner broadcast)
+supabase/           schema.sql, seed.sql (8 sample watches)
+tests/              broadcast.test.ts, viber.test.ts (node:test)
 .env.example        documented env vars (see Local Setup)
 ```
 
@@ -110,7 +114,9 @@ tests/              broadcast.test.ts (node:test)
 
 ### `POST /api/admin/watches`
 
-Creates a watch. **Returns `201`** with the created row on success.
+Creates a watch. **Returns `201`** with the created row on success, plus a
+`viber` field (`{ sent: boolean, error?: string }`) reporting the owner's
+Viber broadcast (sent, or why it was skipped - never fails the save).
 
 Request body:
 
@@ -168,6 +174,12 @@ npm run dev        # http://localhost:3000
    - `SUPABASE_SERVICE_ROLE_KEY` - server-only; powers admin writes
    - `NEXT_PUBLIC_SITE_URL` - your public origin, used in broadcast listing
      links (omit only if you do not want a listing link in posts)
+   - `VIBER_AUTH_TOKEN` - required for the owner auto-post; token from your
+     Viber Channel info -> Developer Tools (same pattern as the web-viber
+     bridge). `VIBER_FROM` overrides the auto-discovered superadmin sender;
+     `VIBER_TARGET_ID` sets a group/community receiver
+   - `NEXT_PUBLIC_WHATSAPP`, `NEXT_PUBLIC_MESSENGER` - inquiry targets on
+     the catalog cards; empty hides the button
 
 ## Deployment
 
@@ -181,7 +193,7 @@ supports it (Vercel, Netlify, Cloudflare Workers):
 ## Validation
 
 ```bash
-npm test          # 6 behavior tests for the deep-link engine (node:test)
+npm test          # 9 tests: deep-link engine, demo client, Viber broadcast (node:test)
 npm run lint      # eslint (Next.js flat config)
 npm run build     # Next.js 16 production build + TypeScript type-check
 ```

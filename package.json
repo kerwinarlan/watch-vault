@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "test": "node --experimental-strip-types --test tests/broadcast.test.ts"
+    "test": "node --experimental-strip-types --test tests/broadcast.test.ts tests/viber.test.ts"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.112.3",
