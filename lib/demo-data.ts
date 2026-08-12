@@ -100,3 +100,39 @@ export const DEMO_WATCHES: Watch[] = [
     created_at: "2026-08-08T00:00:00Z",
   },
 ];
+
+export interface JournalPost {
+  title: string;
+  date: string;
+  tag: string;
+  excerpt: string;
+  image: string;
+}
+
+/** Sample journal entries for the demo, mirroring the original site's Dispatches. */
+export const JOURNAL_POSTS: JournalPost[] = [
+  {
+    title: "Why daylight photos matter when buying pre-owned",
+    date: "Aug 08, 2025",
+    tag: "Collector Notes",
+    excerpt:
+      "A watch that looks flawless under showroom light can tell a different story at 8am. We photograph everything in daylight, and it changes how you read a dial.",
+    image: "https://picsum.photos/seed/journal1/900/600",
+  },
+  {
+    title: "Tracking down a Snowflake in Manila",
+    date: "Jul 27, 2025",
+    tag: "Sourcing",
+    excerpt:
+      "The SBGA211 rarely surfaces locally. When one does, the window is measured in hours - here is how we move when a rare find lands on the desk.",
+    image: "https://picsum.photos/seed/journal2/900/600",
+  },
+  {
+    title: "What a collector's condition note actually says",
+    date: "Jul 11, 2025",
+    tag: "Craft",
+    excerpt:
+      "Between 'unworn' and 'excellent' there is a whole spectrum. Our written notes break down bezel, crystal, bracelet and movement honesty.",
+    image: "https://picsum.photos/seed/journal3/900/600",
+  },
+];

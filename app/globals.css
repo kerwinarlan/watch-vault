@@ -1,13 +1,19 @@
 @import "tailwindcss";
 
 @theme {
-  --color-walnut-deep: #16110b;
-  --color-walnut: #1e1710;
-  --color-walnut-light: #2e2518;
-  --color-cream: #f2ead8;
+  --color-walnut-deep: #0b0604;
+  --color-walnut: #19120d;
+  --color-walnut-light: #dda55233; /* gold-tinted borders, like the original */
+  --color-gold: #dda552;
+  /* Remap the amber scale to The Watch Alley's golds so existing classes match */
+  --color-amber-200: #f4e285;
+  --color-amber-300: #dda552;
+  --color-amber-500: #c9973f;
+  --color-cream: #e8e0d4;
   --color-cream-60: #b3a68e;
   --color-faint: #b3a68e;
-  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-geist), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
   --font-display: var(--font-playfair), "Times New Roman", serif;
 }
 
@@ -33,7 +39,7 @@ body {
 }
 
 @utility gold-text {
-  background: linear-gradient(120deg, #fde68a, #fbbf24);
+  background: linear-gradient(120deg, #f4e285, #dda552);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;

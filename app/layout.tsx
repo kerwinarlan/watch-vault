@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
-import { Inter, Playfair_Display } from "next/font/google";
+import { Geist, Geist_Mono, Playfair_Display } from "next/font/google";
 import Link from "next/link";
 import "./globals.css";
 
-const inter = Inter({ variable: "--font-inter", subsets: ["latin"] });
+const geist = Geist({ variable: "--font-geist", subsets: ["latin"] });
+const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"] });
 const playfair = Playfair_Display({ variable: "--font-playfair", subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -14,29 +15,47 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${inter.variable} ${playfair.variable}`}>
+    <html lang="en" className={`${geist.variable} ${geistMono.variable} ${playfair.variable}`}>
       <body className="flex min-h-screen flex-col bg-walnut-deep font-sans text-cream">
         <header className="sticky top-0 z-40 border-b border-walnut-light/70 bg-walnut-deep/85 backdrop-blur">
           <nav className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
             <Link href="/" className="font-display text-xl tracking-wide text-cream">
               The Watch <span className="text-amber-300">Alley</span>
             </Link>
-            <div className="flex items-center gap-6">
+            <div className="flex flex-wrap items-center justify-end gap-x-6 gap-y-2">
               <Link
-                href="/?status=Available"
+                href="/"
                 className="micro-label text-cream-60 transition-colors hover:text-amber-200"
               >
-                Available
+                Available Pieces
               </Link>
               <Link
                 href="/?status=Sold"
                 className="micro-label text-cream-60 transition-colors hover:text-amber-200"
               >
-                Sold
+                Sold Archive
+              </Link>
+              <Link
+                href="/watch-list"
+                className="micro-label text-cream-60 transition-colors hover:text-amber-200"
+              >
+                Watch List
+              </Link>
+              <Link
+                href="/journal"
+                className="micro-label text-cream-60 transition-colors hover:text-amber-200"
+              >
+                Journal
+              </Link>
+              <Link
+                href="/#contact"
+                className="rounded-full border border-amber-300/40 px-4 py-2 micro-label text-amber-200 transition-colors hover:border-amber-300/70 hover:bg-amber-300/10"
+              >
+                Book a viewing
               </Link>
               <Link
                 href="/admin"
-                className="micro-label text-cream-60 transition-colors hover:text-amber-200"
+                className="micro-label text-cream-60/60 transition-colors hover:text-amber-200"
               >
                 Admin
               </Link>

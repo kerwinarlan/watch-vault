@@ -4,7 +4,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { supabase } from "@/lib/supabase";
-import { CONDITIONS, STATUSES, formatPrice, priceInUsd, type Status, type Watch } from "@/lib/types";
+import { COLLECTION_CHIPS, collectionMatches, formatPrice, priceInUsd, STATUSES, type CollectionChip, type Status, type Watch } from "@/lib/types";
 import { inquireMessengerLink, inquireOnViberText, inquireWhatsAppLink, viberForwardLink } from "@/lib/broadcast";
 
 type PriceFilter = "all" | "lt10" | "10to25" | "gt25";
@@ -70,8 +70,15 @@ function InquiryRow({ watch }: { watch: Watch }) {
 
 function matches(filters: Filters, watch: Watch): boolean {
   if (filters.brand && watch.brand !== filters.brand) return false;
-  if (filters.condition && watch.condition !== filters.condition) return false;
-  if (filters.status && watch.status !== filters.status) return false;
+  if (filters.condition &&
+    !collectionMatches(filters.condition as CollectionChip, watch.condition)) return false;
+  if (filters.status === "Sold") {
+    if (watch.status !== "Sold") return false;
+  } else if (filters.status) {
+    if (watch.status !== filters.status) return false;
+  } else if (watch.status === "Sold") {
+    return false; // the home listing shows Available Pieces; Sold lives in the Archive
+  }
   const usd = priceInUsd(watch);
   if (filters.price === "lt10" && usd >= 10_000) return false;
   if (filters.price === "10to25" && (usd < 10_000 || usd > 25_000)) return false;
@@ -221,9 +228,13 @@ function GalleryModal({
 export default function Catalog({
   initialWatchId,
   initialStatus,
+  eyebrow = "The Watch Alley — Manila",
+  heading = "Available Pieces",
 }: {
   initialWatchId: number | null;
   initialStatus: Status | null;
+  eyebrow?: string;
+  heading?: string;
 }) {
   const [watches, setWatches] = useState<Watch[] | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -269,21 +280,21 @@ export default function Catalog({
   return (
     <div className="mx-auto max-w-6xl px-6 py-14">
       <section className="mb-12 max-w-3xl">
-        <p className="micro-label text-amber-300/80">The Watch Alley — Manila</p>
+        <p className="micro-label text-amber-300/80">{eyebrow}</p>
         <h1 className="mt-4 font-display text-[clamp(40px,7vw,86px)] font-light leading-[0.96] tracking-tight">
           First access, chosen with a{" "}
-          <span className="gold-text">collector's eye</span>.
+          <span className="gold-text">collector&apos;s eye</span>.
         </h1>
         <p className="mt-5 text-sm text-cream-60">
-          Curated pre-owned and brand-new watches in Manila — daylight photos, written condition
-          notes, and direct concierge on Viber. No bots, no monthly fees.
+          First access to curated drops, rare finds, collector notes, and sourcing
+          opportunities from The Watch Alley.
         </p>
       </section>
 
       <div className="mb-8 flex items-center gap-3">
         <span className="h-px w-8 bg-amber-500/60" aria-hidden="true" />
         <h2 className="font-display text-3xl uppercase tracking-tight text-cream">
-          Available Pieces
+          {heading}
         </h2>
       </div>
 
@@ -301,10 +312,10 @@ export default function Catalog({
           onSelect={(v) => setFilters({ ...filters, price: (v ?? "all") as PriceFilter })}
         />
         <FilterRow
-          label="Condition"
-          options={CONDITIONS.map((c) => ({ label: c, value: c }))}
+          label="Collection"
+          options={COLLECTION_CHIPS.map((c) => ({ label: c, value: c }))}
           value={filters.condition}
-          onSelect={(v) => setFilters({ ...filters, condition: v })}
+          onSelect={(v) => setFilters({ ...filters, condition: (v ?? null) as CollectionChip | null })}
         />
         <FilterRow
           label="Availability"

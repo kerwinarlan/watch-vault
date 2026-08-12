@@ -57,16 +57,34 @@ covers desktop.
 
 **Catalog (`/`)**
 
-- Dark luxury storefront with an ink/gold/ivory palette and Playfair Display
-  typography
-- Filter chips: Brand, Price range (USD-equivalent; PHP pegged at 56/USD),
-  Condition, Availability - single-select with toggle and Reset
+- Dark luxury storefront with the original site's exact palette (walnut
+  `#0b0604` / gold `#dda552` / cream `#e8e0d4`, gold-tinted borders) and
+  Playfair Display + Geist type
+- Collection categories matching the original: **Brand New** / **Pre-owned** /
+  **Limited Edition** (plus Brand, Price range, Availability filters)
+- Sold pieces live in the **Sold Archive** (`/?status=Sold`), like the
+  original site's `/sold`
 - Photo gallery modal: thumbnails, prev/next, arrow-key and Escape support
 - "Inquire" buttons on every watch: **Viber**, **WhatsApp** and
   **Messenger** with pre-filled inquiry messages (env-configured)
 - Social links in the footer: Facebook, Instagram, TikTok, WhatsApp, Messenger
 - `/?watch=<id>` opens a specific listing's modal - this is what broadcast
   links point back to
+
+**Watch List (`/watch-list`)**
+
+- "First access from Manila's collecting desk." - the full collector list
+  with the same filters and inquiry buttons
+
+**Journal (`/journal`)**
+
+- "Dispatches on Sourcing and Craft." - sample posts rendered from
+  `lib/demo-data.ts` (swap in real entries anytime)
+
+**Book a viewing (`/#contact`)**
+
+- Private Collecting Desk section with WhatsApp / Messenger / Viber
+  deep links, mirroring the original site's contact section
 
 **Admin & Broadcast (`/admin`)**
 
@@ -102,11 +120,11 @@ covers desktop.
 ## Repository Layout
 
 ```
-app/                pages (/, /admin) + POST/PUT /api/admin/watches
-components/         catalog.tsx, admin.tsx (client components)
-lib/                types.ts, supabase.ts, broadcast.ts, viber.ts (owner broadcast)
+app/                pages (/, /watch-list, /journal, /admin) + POST/PUT /api/admin/watches
+components/         catalog.tsx, journal.tsx, contact.tsx, admin.tsx (client components)
+lib/                types.ts, supabase.ts, broadcast.ts, viber.ts (owner broadcast), demo-data.ts
 supabase/           schema.sql, seed.sql (8 sample watches)
-tests/              broadcast.test.ts, viber.test.ts (node:test)
+tests/              broadcast.test.ts, viber.test.ts, types.test.ts (node:test)
 .env.example        documented env vars (see Local Setup)
 ```
 
@@ -193,7 +211,7 @@ supports it (Vercel, Netlify, Cloudflare Workers):
 ## Validation
 
 ```bash
-npm test          # 9 tests: deep-link engine, demo client, Viber broadcast (node:test)
+npm test          # 10 tests: deep-link engine, demo client, Viber broadcast, collection categories (node:test)
 npm run lint      # eslint (Next.js flat config)
 npm run build     # Next.js 16 production build + TypeScript type-check
 ```
